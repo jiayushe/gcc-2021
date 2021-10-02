@@ -1,30 +1,25 @@
-#include <map>
-#include <set>
-#include <list>
-#include <cmath>
-#include <ctime>
-#include <deque>
-#include <queue>
-#include <stack>
-#include <string>
-#include <bitset>
-#include <cstdio>
-#include <limits>
-#include <vector>
-#include <climits>
-#include <cstring>
-#include <cstdlib>
-#include <fstream>
-#include <numeric>
-#include <sstream>
-#include <iostream>
-#include <algorithm>
-#include <unordered_map>
+#include <bits/stdc++.h>
 
 using namespace std;
 int totalPairs(int n, vector<int>& values) {
     // Complete the total pairs function
-    return -1;
+    vector<int> v;
+    int ans = 0;
+    for(int i = 0; i < n; i++) {
+		int curr = values[i];
+		while(v.size()) {
+			ans++;
+			int prev = v.back();
+			if(curr >= prev) {
+				v.pop_back();
+			}
+			if(curr <= prev) {
+				break;
+			}
+		}
+		v.push_back(curr);
+	}
+    return ans;
 }
 
 int main(){
