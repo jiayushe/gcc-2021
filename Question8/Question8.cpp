@@ -1,11 +1,11 @@
-#include <bits/stdc++.h>
+#include <iostream>
+#include <vector>
 
 using namespace std;
 
 const int inf = 1e9;
 int n, k, d, m;
-vector<vector<int>> rsum;
-vector<vector<int>> memo;
+vector<vector<int>> rsum, memo;
 
 int solve(int curr, int trans) {
     int &ans = memo[curr][trans];
