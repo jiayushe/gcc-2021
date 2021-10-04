@@ -1,35 +1,29 @@
-#include <bits/stdc++.h>
+#include <iostream>
+#include <sstream>
+#include <vector>
+#include <algorithm>
+
 using namespace std;
- 
-int securitiesBuying(int z, vector<int>& security_value) {
-    int n = security_value.size(), no_of_stocks = 0;
+
+int main() {
+    ios::sync_with_stdio(false);
+    cin.tie(NULL);
+    int z, data, n = 0, ans = 0;
+    cin>>z;
+    cin.ignore();
+    string buffer;
+    getline(cin, buffer);
+    istringstream iss(buffer);
     vector<pair<int, int>> v;
-    for(int i = 0; i < n; i++) {
-        v.push_back({security_value[i], i + 1});
-    }
+    while(iss>>data) v.push_back({data, ++n});
     sort(v.begin(), v.end());
     for(int i = 0; i < n; i++) {
         auto& curr = v[i];
         if(z < curr.first) break;
         int x = min(z / curr.first, curr.second);
-        no_of_stocks += x;
+        ans += x;
         z -= x * curr.first;
     }
-    return no_of_stocks;
-}
- 
-int main(){
-    ios::sync_with_stdio(false);
-    cin.tie(NULL);
-    int z;
-    cin>>z;
-    vector<int> input_data;
-    string buffer;
-    int data;
-    getline(cin, buffer);
-    getline(cin, buffer);
-    istringstream iss(buffer);
-    while(iss>>data) input_data.push_back(data);
-    int no_of_stocks_purchased = securitiesBuying(z, input_data);
-    cout<<no_of_stocks_purchased;
+    cout<<ans<<endl;
+    return 0;
 }
