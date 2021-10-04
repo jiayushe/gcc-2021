@@ -1,12 +1,27 @@
-#include <iostream>
-#include <vector>
+#pragma G++ optimize("O3")
+#pragma GCC optimize("O3")
 #include <cstring>
+#include <cstdio>
+#include <algorithm>
 
 using namespace std;
 
 #define LSOne(S) ((S) & -(S))
 #define MAXB 10
 #define MAXC 20
+
+inline char getch() {
+    static char buf[100000], *p1 = buf, *p2 = buf;
+    return p1 == p2 && (p2 = (p1 = buf) + fread(buf, 1, 100000, stdin), p1 == p2) ? EOF : *p1++;
+}
+
+inline int read() {
+    char c;
+    while((c = getch()) < '0' || c > '9');
+    int res = c - '0';
+    while((c = getch()) >= '0' && c <= '9') res = res * 10 + c - '0';
+    return res;
+}
 
 const int inf = 1e9;
 int b, c;
@@ -27,7 +42,7 @@ int solve(int curr, int mask) {
         int v = __builtin_ctz(pow_v);
         auto& curr_rsum = rsum[v];
         ans = min(ans, solve(curr, new_mask));
-        for(int nxt = curr; nxt < c; nxt++) {
+        for(register int nxt = curr; nxt < c; nxt++) {
             ans = min(ans, curr_rsum[curr][nxt] + solve(nxt + 1, new_mask));
         }
         m ^= pow_v;
@@ -35,27 +50,25 @@ int solve(int curr, int mask) {
     return ans;
 }
 
-int main(){
-    ios::sync_with_stdio(false);
-    cin.tie(NULL);
-    cin>>c>>b;
-    for(int i = 0; i < b; i++) {
-        for(int j = 0; j < c; j++) {
-            cin>>t[i][j];
+int main() {
+    c = read(), b = read();
+    for(register int i = 0; i < b; i++) {
+        for(register int j = 0; j < c; j++) {
+            t[i][j] = read();
         }
     }
     memset(rsum, 0, sizeof rsum);
     memset(memo, -1, sizeof memo);
-    for(int i = 0; i < b; i++) {
+    for(register int i = 0; i < b; i++) {
         auto& curr_time = t[i];
         auto& curr_rsum = rsum[i];
-        for(int x = 0; x < c; x++) {
+        for(register int x = 0; x < c; x++) {
             curr_rsum[x][x] = curr_time[x];
-            for(int y = x + 1; y < c; y++) {
+            for(register int y = x + 1; y < c; y++) {
                 curr_rsum[x][y] = curr_rsum[x][y - 1] + curr_time[y];
             }
         }
     }
-    cout<<solve(0, (1 << b) - 1);
+    printf("%d", solve(0, (1 << b) - 1));
     return 0;
 }
