@@ -1,5 +1,6 @@
 #pragma G++ optimize("O3")
 #pragma GCC optimize("O3")
+#pragma comment(linker, "/STACK:102400000,102400000")
 #include <cstring>
 #include <cstdio>
 
@@ -61,7 +62,7 @@ int main() {
     cnt = n;
     memset(prime_grp, -1, sizeof prime_grp);
     memset(d, -1, sizeof d);
-    for(register int i = 0; i < n; i++) {
+    for(register int i = 0; i < n; ++i) {
         curr = read();
         j = 1, f = prime[j];
         while(f * f <= curr) {
