@@ -1,12 +1,13 @@
 #include <iostream>
 #include <vector>
 #include <algorithm>
-#include <unordered_map>
 
 using namespace std;
 typedef long long ll;
 
 const ll mod = 1e9 + 7;
+int prime[] = {0,2,3,5,7,11,13,17,19,23,29,31,37,41,43,47,53,59,61,67,71,73,79,83,89,97,101,103,107,109,113,127,131,137,139,149,151,157,163,167,173,179,181,191,193,197,199,211,223,227,229,233,239,241,251,257,263,269,271,277,281,283,293,307,311,313,317,331,337,347,349,353,359,367,373,379,383,389,397,401,409,419,421,431,433,439,443,449,457,461,463,467,479,487,491,499,503,509,521,523,541,547,557,563,569,571,577,587,593,599,601,607,613,617,619,631,641,643,647,653,659,661,673,677,683,691,701,709,719,727,733,739,743,751,757,761,769,773,787,797,809,811,821,823,827,829,839,853,857,859,863,877,881,883,887,907,911,919,929,937,941,947,953,967,971,977,983,991,997};
+int m = 169;
 
 ll twopowmod(ll p) {
     ll res = 1, a = 2;
@@ -36,27 +37,18 @@ int main() {
     vector<int> values(n);
     for(int i = 0; i < n; i++) cin>>values[i];
     int mx = *max_element(values.begin(), values.end());
-    vector<int> prime, lp(mx + 1, 0);
-    unordered_map<int, int> prime_map;
-    for(int i = 2; i <= mx; i++) {
-        if(lp[i] == 0)
-            lp[i] = i, prime.push_back(i), prime_map[i] = prime.size() - 1;
-        for(int j = 0; j < (int)prime.size() && i * prime[j] <= mx; j++)
-            lp[i * prime[j]] = prime[j];
-    }
-    int m = prime.size();
-    vector<int> prime_grp(m, -1), d(n, -1), pf;
+    vector<int> prime_grp(mx + 1, -1), d(n, -1), pf;
     int cnt = n;
     for(int i = 0; i < n; i++) {
         pf.clear();
-        int curr = values[i], j = 0, f = prime[j];
+        int curr = values[i], j = 1, f = prime[j];
         while(f * f <= curr) {
-            if(curr % f == 0) pf.push_back(j);
+            if(curr % f == 0) pf.push_back(f);
             while(curr % f == 0) curr /= f;
             if(++j == m) break;
             f = prime[j];
         }
-        if(curr != 1) pf.push_back(prime_map[curr]);
+        if(curr != 1) pf.push_back(curr);
         for(auto p : pf) {
             if(prime_grp[p] == -1) {
                 prime_grp[p] = i;
