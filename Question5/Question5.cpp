@@ -1,15 +1,18 @@
-using namespace std;
 #include <string>
 #include <iostream>
 
-string solution(string n){
-    int m = n.length();
+using namespace std;
+
+int main() {
+    ios::sync_with_stdio(false);
+    cin.tie(NULL);
+    string s;
+    cin>>s;
+    int n = s.length();
     int one = 0, two = 0;
-    for(int i = 0; i < m; i++) {
+    for(int i = 0; i < n; i++) {
         int j = i;
-        while(j < m && n[j] == '0') {
-            j++;
-        }
+        while(j < n && s[j] == '0') j++;
         int curr = j - i;
         if(curr > one) {
             two = one;
@@ -19,14 +22,6 @@ string solution(string n){
         }
         i = j;
     }
-    return (one % 2 && one / 2 + 1 > two) ? "A" : "B";
-}
-
-int main() {
-    ios::sync_with_stdio(false);
-    cin.tie(NULL);
-    string n;
-    cin>>n;
-    string answer = solution(n);
-    cout<<answer<<endl;
+    string ans = (one % 2 && one / 2 + 1 > two) ? "A" : "B";
+    cout<<ans<<endl;
 }
