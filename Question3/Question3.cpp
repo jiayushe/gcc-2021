@@ -1,12 +1,18 @@
-#include <bits/stdc++.h>
+#include <iostream>
+#include <vector>
+#include <algorithm>
 
 using namespace std;
 
-int portfolio_profit_maximisation(int x, vector<int> a, vector<int> b, int n, int m) {
-    if(n > m) {
-        swap(a, b);
-        swap(n, m);
-    }
+int main() {
+    ios::sync_with_stdio(false);
+    cin.tie(NULL);
+    int n, m, x;
+    cin>>n>>m>>x;
+    vector<int> a(n), b(m);
+    for(int i = 0; i < n; i++) cin>>a[i];
+    for(int i = 0; i < m; i++) cin>>b[i];
+    if(n > m) swap(a, b), swap(n, m);
     vector<int> ap, bp;
     ap.push_back(x);
     for(int i = 0; i < n; i++) {
@@ -24,22 +30,6 @@ int portfolio_profit_maximisation(int x, vector<int> a, vector<int> b, int n, in
         int j = upper_bound(bp.begin(), bp.end(), ap[i]) - bp.begin();
         ans = max(ans, i + j - 1);
     }
-    return ans;
-}
-
-int main() {
-    ios::sync_with_stdio(false);
-    cin.tie(NULL);
-    int n, m, x;
-    cin>>n>>m>>x;
-    vector<int> a(n), b(m);
-    for (int i = 0; i < n; ++i) {
-        cin>>a[i];
-    }
-    for (int i = 0; i < m; ++i) {
-        cin>>b[i];
-    }
-    int result = portfolio_profit_maximisation(x, a, b, n, m);
-    cout<<result;
+    cout<<ans<<endl;
     return 0;
 }
