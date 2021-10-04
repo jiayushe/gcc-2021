@@ -1,32 +1,40 @@
-#include <bits/stdc++.h>
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <unordered_map>
 
 using namespace std;
 typedef long long ll;
 
 const ll mod = 1e9 + 7;
 
-ll powmod(ll a, ll b) {
-    ll res = 1; a %= mod;
-    for(; b; b >>= 1) {
-        if(b & 1) res = res * a % mod;
-        a = a * a % mod;
+ll twopowmod(ll p) {
+    ll res = 1, a = 2;
+    while(p) {
+        if(p & 1) res = res * a % mod;
+        a = a * a % mod, p >>= 1;
     }
     return res;
 }
 
-int find(vector<int>& d, int a) {
+inline int find(vector<int>& d, int a) {
     if(d[a] == -1) return a;
     return d[a] = find(d, d[a]);
 }
 
-void join(vector<int>& d, int a, int b) {
-    a = find(d, a);
-    b = find(d, b);
+inline void join(vector<int>& d, int a, int b) {
+    a = find(d, a), b = find(d, b);
     if(a == b) return;
     d[a] = b;
 }
 
-void countStablePartitions(int n, vector<int>& values) {
+int main() {
+    ios::sync_with_stdio(false);
+    cin.tie(NULL);
+    int n;
+    cin>>n;
+    vector<int> values(n);
+    for(int i = 0; i < n; i++) cin>>values[i];
     int mx = *max_element(values.begin(), values.end());
     vector<int> prime, lp(mx + 1, 0);
     unordered_map<int, int> prime_map;
@@ -37,12 +45,11 @@ void countStablePartitions(int n, vector<int>& values) {
             lp[i * prime[j]] = prime[j];
     }
     int m = prime.size();
-    vector<int> prime_grp(m, -1);
-    vector<int> d(n, -1);
+    vector<int> prime_grp(m, -1), d(n, -1), pf;
     int cnt = n;
     for(int i = 0; i < n; i++) {
+        pf.clear();
         int curr = values[i], j = 0, f = prime[j];
-        vector<int> pf;
         while(f * f <= curr) {
             if(curr % f == 0) pf.push_back(j);
             while(curr % f == 0) curr /= f;
@@ -53,30 +60,13 @@ void countStablePartitions(int n, vector<int>& values) {
         for(auto p : pf) {
             if(prime_grp[p] == -1) {
                 prime_grp[p] = i;
-            } else {
-                if(find(d, i) != find(d, prime_grp[p])) {
-                    join(d, i, prime_grp[p]);
-                    cnt--;
-                }
+            } else if(find(d, i) != find(d, prime_grp[p])) {
+                join(d, i, prime_grp[p]);
+                cnt--;
             }
         }
     }
-    if(cnt == 1) {
-        cout<<"NO\n0";
-    } else {
-        cout<<"YES\n"<<(powmod(2, cnt) + mod - 2) % mod;
-    }
-}
-
-int main() {
-    ios::sync_with_stdio(false);
-    cin.tie(NULL);
-    int n;
-    cin>>n;
-    vector<int> values(n);
-    for(int i = 0; i < n; ++i) {
-        cin>>values[i];
-    }
-    countStablePartitions(n, values);
+    int ans = (twopowmod(cnt) - 2) % mod;
+    cout<<(ans ? "YES\n" : "NO\n")<<ans<<endl;
     return 0;
 }
