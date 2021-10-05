@@ -27,7 +27,6 @@ inline int read() {
 
 const int inf = 1e9;
 int b, c;
-int t[MAXB][MAXC];
 int rsum[MAXB][MAXC][MAXC];
 int memo[MAXC][1<<MAXB];
 
@@ -54,20 +53,17 @@ int solve(int curr, int mask) {
 
 int main() {
     c = read(), b = read();
-    for(register int i = 0; i < b; ++i) {
-        for(register int j = 0; j < c; ++j) {
-            t[i][j] = read();
-        }
-    }
     memset(rsum, 0, sizeof rsum);
     memset(memo, -1, sizeof memo);
     for(register int i = 0; i < b; ++i) {
-        auto& curr_time = t[i];
         auto& curr_rsum = rsum[i];
-        for(register int x = 0; x < c; ++x) {
-            curr_rsum[x][x] = curr_time[x];
-            for(register int y = x + 1; y < c; ++y) {
-                curr_rsum[x][y] = curr_rsum[x][y - 1] + curr_time[y];
+        curr_rsum[0][0] = read();
+        for(register int y = 1; y < c; ++y) {
+            curr_rsum[0][y] = curr_rsum[0][y - 1] + read();
+        }
+        for(register int x = 1; x < c; ++x) {
+            for(register int y = x; y < c; ++y) {
+                curr_rsum[x][y] = curr_rsum[x - 1][y] - curr_rsum[x - 1][x - 1];
             }
         }
     }
