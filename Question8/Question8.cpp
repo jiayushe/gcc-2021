@@ -1,10 +1,14 @@
 #pragma G++ optimize("O3")
 #pragma GCC optimize("O3")
 #pragma comment(linker, "/STACK:102400000,102400000")
+#include <cstring>
 #include <vector>
 #include <cstdio>
+#include <cctype>
 
 using namespace std;
+
+#define MAXN 5001
 
 inline char getch() {
     static char buf[100000], *p1 = buf, *p2 = buf;
@@ -13,13 +17,13 @@ inline char getch() {
 
 inline int read() {
     char c;
-    while((c = getch()) < '0' || c > '9');
-    int res = c - '0';
-    while((c = getch()) >= '0' && c <= '9') res = res * 10 + c - '0';
+    while(!isdigit(c = getch()));
+    int res = c ^ 48;
+    while(isdigit(c = getch())) res = res * 10 + (c ^ 48);
     return res;
 }
 
-int n, k, d, m;
+int n, k, d, m, returns[MAXN];
 vector<vector<int>> rsum, memo;
 
 int solve(int curr, int trans) {
@@ -37,7 +41,6 @@ int solve(int curr, int trans) {
 
 int main() {
     n = read(), k = read(), d = read(), m = read();
-    vector<int> returns(n);
     for(register int i = 0; i < n; ++i) {
         returns[i] = read();
     }
@@ -47,9 +50,10 @@ int main() {
         rsum[0][j] = rsum[0][j - 1] + returns[j];
     }
     for(register int i = 1; i < n; ++i) {
-        rsum[i][i] = returns[i] * m;
+        auto& curr_rsum = rsum[i];
+        curr_rsum[i] = returns[i] * m;
         for(register int j = i + 1; j < n; ++j) {
-            rsum[i][j] = rsum[i][j - 1] + returns[j] * (j - i < d ? m : 1);
+            curr_rsum[j] = curr_rsum[j - 1] + returns[j] * (j - i < d ? m : 1);
         }
     }
     memo.assign(n, vector<int>(k, -1));

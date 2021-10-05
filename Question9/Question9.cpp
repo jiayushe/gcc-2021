@@ -3,6 +3,7 @@
 #pragma comment(linker, "/STACK:102400000,102400000")
 #include <cstring>
 #include <cstdio>
+#include <cctype>
 #include <algorithm>
 
 using namespace std;
@@ -12,15 +13,15 @@ using namespace std;
 #define MAXC 20
 
 inline char getch() {
-    static char buf[100000], *p1 = buf, *p2 = buf;
-    return p1 == p2 && (p2 = (p1 = buf) + fread(buf, 1, 100000, stdin), p1 == p2) ? EOF : *p1++;
+    static char buf[1000], *p1 = buf, *p2 = buf;
+    return p1 == p2 && (p2 = (p1 = buf) + fread(buf, 1, 1000, stdin), p1 == p2) ? EOF : *p1++;
 }
 
 inline int read() {
     char c;
-    while((c = getch()) < '0' || c > '9');
-    int res = c - '0';
-    while((c = getch()) >= '0' && c <= '9') res = res * 10 + c - '0';
+    while(!isdigit(c = getch()));
+    int res = c ^ 48;
+    while(isdigit(c = getch())) res = res * 10 + (c ^ 48);
     return res;
 }
 

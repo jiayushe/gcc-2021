@@ -22,8 +22,8 @@ inline char getch() {
 inline int read() {
     char c;
     while(!isdigit(c = getch()));
-    int res = c - '0';
-    while(isdigit(c = getch())) res = res * 10 + c - '0';
+    int res = c ^ 48;
+    while(isdigit(c = getch())) res = res * 10 + (c ^ 48);
     return res;
 }
 
@@ -85,7 +85,7 @@ int main() {
         else if(cnt[i] == mx && idxs.size()) idxs.push_back(i);
     }
     if(idxs.size() == 0) {
-        printf("no groups");
+        puts("no groups");
         return 0;
     }
     int idx = idxs[0];

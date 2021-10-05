@@ -3,6 +3,7 @@
 #pragma comment(linker, "/STACK:102400000,102400000")
 #include <cstring>
 #include <cstdio>
+#include <cctype>
 
 using namespace std;
 typedef long long ll;
@@ -18,9 +19,9 @@ inline char getch() {
 
 inline int read() {
     char c;
-    while((c = getch()) < '0' || c > '9');
-    int res = c - '0';
-    while((c = getch()) >= '0' && c <= '9') res = res * 10 + c - '0';
+    while(!isdigit(c = getch()));
+    int res = c ^ 48;
+    while(isdigit(c = getch())) res = res * 10 + (c ^ 48);
     return res;
 }
 
@@ -74,8 +75,7 @@ int main() {
         if(curr != 1) update(i, curr);
     }
     int ans = (twopowmod(cnt) - 2) % mod;
-    if(ans) printf("YES\n");
-    else printf("NO\n");
+    puts("YES");
     printf("%d", ans);
     return 0;
 }
