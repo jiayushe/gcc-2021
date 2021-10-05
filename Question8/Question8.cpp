@@ -23,28 +23,12 @@ inline int read() {
     return res;
 }
 
-int n, k, d, m, returns[MAXN];
-vector<vector<int>> rsum, memo;
-
-int solve(int curr, int trans) {
-    int &ans = memo[curr][trans];
-    if(ans != -1) return ans;
-    if(trans == k - 1) {
-        ans = rsum[curr + 1][n - 1];
-    } else {
-        for(register int i = curr + 1; i <= min(n - 1, n - k + trans + 1); ++i) {
-            ans = max(ans, rsum[curr + 1][i - 1] + solve(i, trans + 1));
-        }
-    }
-    return ans;
-}
-
 int main() {
-    n = read(), k = read(), d = read(), m = read();
+    int n = read(), k = read(), d = read(), m = read(), returns[MAXN];
     for(register int i = 0; i < n; ++i) {
         returns[i] = read();
     }
-    rsum.assign(n + 1, vector<int>(n + 1, 0));
+    vector<vector<int>> rsum(n + 1, vector<int>(n + 1)), memo(k, vector<int>(n));
     rsum[0][0] = returns[0];
     for(register int j = 1; j < n; ++j) {
         rsum[0][j] = rsum[0][j - 1] + returns[j];
@@ -56,10 +40,20 @@ int main() {
             curr_rsum[j] = curr_rsum[j - 1] + returns[j] * (j - i < d ? m : 1);
         }
     }
-    memo.assign(n, vector<int>(k, -1));
-    int ans = solve(0, 0);
+    for(register int curr = n - 1; curr >= k - 1; --curr) {
+        memo[k - 1][curr] = rsum[curr + 1][n - 1];
+    }
+    for(register int trans = k - 2; trans >= 0; --trans) {
+        for(register int curr = n - k + trans; curr >= trans; --curr) {
+            int &ans = memo[trans][curr];
+            for(register int nxt = curr + 1; nxt <= n - k + trans + 1; ++nxt) {
+                ans = max(ans, rsum[curr + 1][nxt - 1] + memo[trans + 1][nxt]);
+            }
+        }
+    }
+    int ans = memo[0][0];
     for(register int i = 1; i <= n - k; ++i) {
-        ans = max(ans, rsum[0][i - 1] + solve(i, 0));
+        ans = max(ans, rsum[0][i - 1] + memo[0][i]);
     }
     printf("%d", ans);
     return 0;
