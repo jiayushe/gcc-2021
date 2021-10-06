@@ -47,16 +47,22 @@ inline void join(int a, int b) {
     d[a] = b;
 }
 
+inline int myhash(string s) {
+    int h = 2166136261, n = s.length(), i = 0;
+    while(i < n) h *= 16777619, h ^= s[i++];
+    return h;
+}
+
 int main() {
     int n = read(), m = read(), a = read(), b = read(), f = read(), s = read(), t = read(), xg, yg;
     string x;
     vector<string> idx_nme(n);
-    unordered_map<string, int> nme_idx;
+    unordered_map<int, int> nme_idx;
     memset(d, -1, sizeof d);
     for(register int i = 0; i < n; ++i) {
         x = read_str();
         idx_nme[i] = x;
-        nme_idx[x] = i;
+        nme_idx[myhash(x)] = i;
         cnt[i] = 1;
         switch(read()) {
             case 1:
@@ -68,7 +74,7 @@ int main() {
         }
     }
     for(register int i = 0; i < m; ++i) {
-        xg = find(nme_idx[read_str()]), yg = find(nme_idx[read_str()]);
+        xg = find(nme_idx[myhash(read_str())]), yg = find(nme_idx[myhash(read_str())]);
         if(xg != yg && cnt[xg] + cnt[yg] <= b && fcnt[xg] + fcnt[yg] <= f
             && scnt[xg] + scnt[yg] <= s && tcnt[xg] + tcnt[yg] <= t) {
             join(xg, yg);
