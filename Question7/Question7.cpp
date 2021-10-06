@@ -75,7 +75,7 @@ int main() {
         if(curr != 1) update(i, curr);
     }
     int ans = (twopowmod(cnt) - 2) % mod;
-    puts("YES");
+    puts(ans ? "YES" : "NO");
     printf("%d", ans);
     return 0;
 }
