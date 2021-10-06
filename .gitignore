@@ -1,2 +1,4 @@
 *.out
+*.in
+.vscode
 .DS_Store
