@@ -2,13 +2,11 @@
 #pragma GCC optimize("O3")
 #pragma comment(linker, "/STACK:102400000,102400000")
 #include <cstring>
-#include <vector>
 #include <cstdio>
 #include <cctype>
+#include <iostream>
 
 using namespace std;
-
-#define MAXN 5001
 
 inline char getch() {
     static char buf[100000], *p1 = buf, *p2 = buf;
@@ -24,13 +22,12 @@ inline int read() {
 }
 
 int main() {
-    int n = read(), k = read(), d = read(), m = read(), returns[MAXN];
-    for(register int i = 0; i < n; ++i) {
-        returns[i] = read();
-    }
-    vector<vector<int>> rsum(n + 1, vector<int>(n + 1)), memo(k, vector<int>(n));
-    rsum[0][0] = returns[0];
+    int n = read(), k = read(), d = read(), m = read(), returns[n], rsum[n + 1][n + 1], memo[k][n];
+    memset(rsum, 0, sizeof rsum);
+    memset(memo, 0, sizeof memo);
+    rsum[0][0] = returns[0] = read();
     for(register int j = 1; j < n; ++j) {
+        returns[j] = read();
         rsum[0][j] = rsum[0][j - 1] + returns[j];
     }
     for(register int i = 1; i < n; ++i) {
