@@ -50,12 +50,10 @@ int main() {
             while(m) {
                 int pow_v = LSOne(m);
                 int new_mask = mask ^ pow_v;
-                int v = __builtin_ctz(pow_v);
-                auto& curr_rsum = rsum[v];
+                auto& curr_rsum = rsum[__builtin_ctz(pow_v)];
                 ans = min(ans, memo[new_mask][curr]);
-                for(register int nxt = curr; nxt < c; ++nxt) {
-                    ans = min(ans, curr_rsum[curr][nxt] + memo[new_mask][nxt + 1]);
-                }
+                int nxt = curr;
+                while(nxt < c) ans = min(ans, curr_rsum[curr][nxt] + memo[new_mask][++nxt]);
                 m ^= pow_v;
             }
         }
