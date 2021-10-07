@@ -13,22 +13,19 @@ using namespace std;
 #define MAXC 21
 #define inf 100000
 
+char buf[1000], *p = buf;
 int rsum[MAXB][MAXC][MAXC], memo[1<<MAXB][MAXC];
-
-inline char getch() {
-    static char buf[2000], *p1 = buf, *p2 = buf;
-    return p1 == p2 && (p2 = (p1 = buf) + fread(buf, 1, 2000, stdin), p1 == p2) ? EOF : *p1++;
-}
 
 inline int read() {
     char c;
-    while(!isdigit(c = getch()));
+    while(!isdigit(c = *p++));
     int res = c ^ 48;
-    while(isdigit(c = getch())) res = res * 10 + (c ^ 48);
+    while(isdigit(c = *p++)) res = res * 10 + (c ^ 48);
     return res;
 }
 
 int main() {
+    fread(buf, 1, 1000, stdin);
     int c = read(), b = read();
     memset(rsum, 0, sizeof rsum);
     memset(memo, 0, sizeof memo);
