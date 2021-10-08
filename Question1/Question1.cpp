@@ -5,20 +5,10 @@
 
 using namespace std;
 
-inline char getch() {
-    static char buf[10], *p1 = buf, *p2 = buf;
-    return p1 == p2 && (p2 = (p1 = buf) + fread(buf, 1, 10, stdin), p1 == p2) ? EOF : *p1++;
-}
-
-inline int read() {
-    char c;
-    while(!isdigit(c = getch()));
-    int res = c - '0';
-    while(isdigit(c = getch())) res = res * 10 + c - '0';
-    return res;
-}
-
 int main() {
-    int n = read();
-    printf("%d\n", n / 3 * 2 + (n % 3 > 0));
+    char buf[16], *p = buf;
+    fread(buf, 1, 16, stdin);
+    int n = 0;
+    while(isdigit(*p)) n = n * 10 + (*p++ ^ 48);
+    printf("%d", n / 3 * 2 + (n % 3 > 0));
 }
