@@ -1,6 +1,5 @@
 #pragma G++ optimize("O3")
 #pragma GCC optimize("O3")
-#pragma comment(linker, "/STACK:102400000,102400000")
 #include <cstring>
 #include <cstdio>
 #include <cctype>
@@ -10,8 +9,9 @@ using namespace std;
 
 #define LSOne(S) ((S) & -(S))
 #define inf 100000
+#define SZ 1000
 
-char buf[1000], *p = buf;
+char buf[SZ], *p = buf;
 
 inline int read() {
     char c;
@@ -22,7 +22,7 @@ inline int read() {
 }
 
 int main() {
-    fread(buf, 1, 1000, stdin);
+    fread(buf, 1, SZ, stdin);
     int c = read(), b = read();
     int rsum[b][c][c], memo[1<<b][c+1];
     memset(rsum, 0, sizeof rsum);

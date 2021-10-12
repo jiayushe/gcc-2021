@@ -1,6 +1,5 @@
 #pragma G++ optimize("O3")
 #pragma GCC optimize("O3")
-#pragma comment(linker, "/STACK:102400000,102400000")
 #include <cstring>
 #include <cstdio>
 #include <cctype>
