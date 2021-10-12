@@ -6,6 +6,11 @@
 
 using namespace std;
 
+struct intpair {
+    int first;
+    int second;
+};
+
 inline char getch() {
     static char buf[1000], *p1 = buf, *p2 = buf;
     return p1 == p2 && (p2 = (p1 = buf) + fread(buf, 1, 1000, stdin), p1 == p2) ? EOF : *p1++;
@@ -22,9 +27,9 @@ inline int read() {
 
 int main() {
     int z = read(), data, n = 0, ans = 0;
-    vector<pair<int, int>> v;
+    vector<intpair> v;
     while((data = read())) v.push_back({data, ++n});
-    sort(v.begin(), v.end());
+    sort(v.begin(), v.end(), [](const intpair& a, const intpair& b) { return a.first < b.first; });
     for(int i = 0; i < n; ++i) {
         auto& curr = v[i];
         if(z < curr.first) break;
