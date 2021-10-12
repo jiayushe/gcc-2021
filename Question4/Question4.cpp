@@ -5,9 +5,11 @@
 
 using namespace std;
 
+#define SZ 100000
+
 inline char getch() {
-    static char buf[10000000], *p1 = buf, *p2 = buf;
-    return p1 == p2 && (p2 = (p1 = buf) + fread(buf, 1, 10000000, stdin), p1 == p2) ? EOF : *p1++;
+    static char buf[SZ], *p1 = buf, *p2 = buf;
+    return p1 == p2 && (p2 = (p1 = buf) + fread(buf, 1, SZ, stdin), p1 == p2) ? EOF : *p1++;
 }
 
 inline int read() {
