@@ -1,10 +1,6 @@
-def sol(n):
-   #add code here
-
-# do not edit below code
 def main():
-    n=int(input())
-    print(sol(n))
+    n = int(input())
+    print(n // 3 * 2 + (n % 3 > 0))
 
 if __name__ == '__main__':
     main()
