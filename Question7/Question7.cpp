@@ -1,6 +1,6 @@
-#pragma GCC optimize("Ofast,unroll-loops","omit-frame-pointer","inline")
+#pragma GCC optimize("Ofast,unroll-loops,inline")
 #pragma GCC option("arch=native","tune=native","no-zero-upper")
-#pragma GCC target("sse,sse2,sse3,ssse3,sse4,popcnt,abm,mmx,avx,tune=native,avx2")
+#pragma GCC target("bmi,bmi2,lzcnt,popcnt,movbe,aes,pclmul,rdrnd,abm,mmx,avx,avx2,f16c,fma,sse,sse2,sse3,ssse3,sse4.1,sse4.2")
 #include <cstdio>
 #include <cctype>
 

@@ -1,4 +1,6 @@
-#pragma GCC optimize("O3")
+#pragma GCC optimize("Ofast,unroll-loops,inline")
+#pragma GCC option("arch=native","tune=native","no-zero-upper")
+#pragma GCC target("bmi,bmi2,lzcnt,popcnt,movbe,aes,pclmul,rdrnd,abm,mmx,avx,avx2,f16c,fma,sse,sse2,sse3,ssse3,sse4.1,sse4.2")
 #include <stdio.h>
 #include <ctype.h>
 
@@ -9,10 +11,12 @@ char buf[SZ], *p1 = buf, *p2 = buf;
 char getch();
 int read();
 
+__attribute__((optimize("-Ofast")))
 inline char getch() {
     return p1 == p2 && (p2 = (p1 = buf) + fread(buf, 1, SZ, stdin), p1 == p2) ? EOF : *p1++;
 }
 
+__attribute__((optimize("-Ofast")))
 inline int read() {
     char c;
     while(!isdigit(c = getch()));
@@ -21,9 +25,9 @@ inline int read() {
     return res;
 }
 
+__attribute__((optimize("-Ofast")))
 int main() {
-    int n = read();
-    int v[n], ans = 0, curr, k = 0;
+    int n = read(), v[n], ans = 0, curr, k = 0;
     for(int i = 0; i < n; ++i) {
         curr = read();
         while(k) {

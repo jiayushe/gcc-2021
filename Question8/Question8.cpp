@@ -1,8 +1,9 @@
-#pragma GCC optimize("Ofast,unroll-loops","omit-frame-pointer","inline")
+#pragma GCC optimize("Ofast,unroll-loops,inline")
 #pragma GCC option("arch=native","tune=native","no-zero-upper")
-#pragma GCC target("sse,sse2,sse3,ssse3,sse4,popcnt,abm,mmx,avx,avx2")
+#pragma GCC target("bmi,bmi2,lzcnt,popcnt,movbe,aes,pclmul,rdrnd,abm,mmx,avx,avx2,f16c,fma,sse,sse2,sse3,ssse3,sse4.1,sse4.2")
 #include <cstring>
-#include <iostream>
+#include <cstdio>
+#include <cctype>
 
 using namespace std;
 
@@ -19,6 +20,12 @@ inline int read() {
     int res = c ^ 48;
     while(isdigit(c = getch())) res = res * 10 + (c ^ 48);
     return res;
+}
+
+__attribute__((optimize("-Ofast")))
+inline int max_fast(int x, int y) {
+    int m = (x - y) >> 31;
+    return x + ((y - x) & m);
 }
 
 __attribute__((optimize("-Ofast")))
@@ -45,13 +52,13 @@ int main() {
         for(register int curr = n - k + trans; curr >= trans; --curr) {
             int &ans = memo[trans][curr];
             for(register int nxt = curr + 1; nxt <= n - k + trans + 1; ++nxt) {
-                ans = max(ans, rsum[curr + 1][nxt - 1] + memo[trans + 1][nxt]);
+                ans = max_fast(ans, rsum[curr + 1][nxt - 1] + memo[trans + 1][nxt]);
             }
         }
     }
     int ans = memo[0][0];
     for(register int i = 1; i <= n - k; ++i) {
-        ans = max(ans, rsum[0][i - 1] + memo[0][i]);
+        ans = max_fast(ans, rsum[0][i - 1] + memo[0][i]);
     }
     printf("%d", ans);
     return 0;
