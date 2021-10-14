@@ -1,18 +1,18 @@
-#pragma G++ optimize("O3")
-#pragma GCC optimize("O3")
-#pragma comment(linker, "/STACK:102400000,102400000")
+#pragma GCC optimize("Ofast,unroll-loops","omit-frame-pointer","inline")
+#pragma GCC option("arch=native","tune=native","no-zero-upper")
+#pragma GCC target("sse,sse2,sse3,ssse3,sse4,popcnt,abm,mmx,avx,avx2")
 #include <cstring>
-#include <cstdio>
-#include <cctype>
 #include <iostream>
 
 using namespace std;
 
+__attribute__((optimize("-Ofast")))
 inline char getch() {
     static char buf[100000], *p1 = buf, *p2 = buf;
     return p1 == p2 && (p2 = (p1 = buf) + fread(buf, 1, 100000, stdin), p1 == p2) ? EOF : *p1++;
 }
 
+__attribute__((optimize("-Ofast")))
 inline int read() {
     char c;
     while(!isdigit(c = getch()));
@@ -21,6 +21,7 @@ inline int read() {
     return res;
 }
 
+__attribute__((optimize("-Ofast")))
 int main() {
     int n = read(), k = read(), d = read(), m = read(), returns[n], rsum[n + 1][n + 1], memo[k][n];
     memset(rsum, 0, sizeof rsum);
