@@ -2,7 +2,8 @@
 #pragma GCC option("arch=native","tune=native","no-zero-upper")
 #pragma GCC target("sse,sse2,sse3,ssse3,sse4,popcnt,abm,mmx,avx,avx2")
 #include <cstring>
-#include <iostream>
+#include <cstdio>
+#include <cctype>
 
 using namespace std;
 
@@ -19,6 +20,12 @@ inline int read() {
     int res = c ^ 48;
     while(isdigit(c = *p++)) res = res * 10 + (c ^ 48);
     return res;
+}
+
+__attribute__((optimize("-Ofast")))
+inline int min_fast(int x, int y) {
+    int m = (y - x) >> 31;
+    return y & m | x & ~m;
 }
 
 __attribute__((optimize("-Ofast")))
@@ -46,9 +53,9 @@ int main() {
             do {
                 int pow_v = LSOne(m), new_mask = mask ^ pow_v, nxt = curr;
                 auto& curr_memo = memo[new_mask];
-                ans = min(ans, curr_memo[curr]);
+                ans = min_fast(ans, curr_memo[curr]);
                 auto& curr_rsum = rsum[__builtin_ctz(pow_v)];
-                do { ans = min(ans, curr_rsum[curr][nxt] + curr_memo[++nxt]); } while(nxt < c);
+                do { ans = min_fast(ans, curr_rsum[curr][nxt] + curr_memo[++nxt]); } while(nxt < c);
                 m ^= pow_v;
             } while(m);
         }
