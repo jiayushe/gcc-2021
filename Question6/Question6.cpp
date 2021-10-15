@@ -3,12 +3,13 @@
 #pragma GCC target("bmi,bmi2,lzcnt,popcnt,movbe,aes,pclmul,rdrnd,abm,mmx,avx,avx2,f16c,fma,sse,sse2,sse3,ssse3,sse4.1,sse4.2")
 #include <vector>
 #include <algorithm>
-#include <unordered_map>
 #include <cstring>
 #include <string>
 #include <cstdio>
+#include <ext/pb_ds/assoc_container.hpp>
 
 using namespace std;
+using namespace __gnu_pbds;
 
 #define MAXN 10000
 
@@ -63,7 +64,7 @@ __attribute__((optimize("-Ofast")))
 int main() {
     int n = read(), m = read(), a = read() - 1, b = read(), f = read(), s = read(), t = read(), xg, yg;
     vector<string> idx_nme(n);
-    unordered_map<int, int> nme_idx;
+    gp_hash_table<int, int> nme_idx;
     memset(d, -1, sizeof d);
     for(register int i = 0; i < n; ++i) {
         idx_nme[i] = read_str();
