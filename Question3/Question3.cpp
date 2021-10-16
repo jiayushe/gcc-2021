@@ -7,19 +7,13 @@
 
 using namespace std;
 
-__attribute__((optimize("-Ofast")))
-inline char getch() {
-    static char buf[100000], *p1 = buf, *p2 = buf;
-    return p1 == p2 && (p2 = (p1 = buf) + fread(buf, 1, 100000, stdin), p1 == p2) ? EOF : *p1++;
-}
+char buf[100000], *p = buf;
 
 __attribute__((optimize("-Ofast")))
 inline int read() {
-    char c;
-    while(!isdigit(c = getch()) && c != EOF);
-    if(c == EOF) return 0;
-    int res = c ^ 48;
-    while(isdigit(c = getch())) res = res * 10 + (c ^ 48);
+    while(!isdigit(*p)) ++p;
+    int res = *p++ ^ 48;
+    while(isdigit(*p)) res = res * 10 + (*p++ ^ 48);
     return res;
 }
 
@@ -31,6 +25,7 @@ inline int max_fast(int x, int y) {
 
 __attribute__((optimize("-Ofast")))
 int main() {
+    fread(buf, 1, 100000, stdin);
     int n = read(), m = read(), x = read(), a[++n], b[++m], n2 = n, m2 = m;
     a[0] = b[0] = 0;
     for(register int i = 1; i < n; ++i) {
@@ -44,7 +39,7 @@ int main() {
         b[i] = b[i - 1] + read();
         if(b[i] >= x) {
             m2 = i + (b[i] == x);
-            while(++i < m) read();
+            break;
         }
     }
     int ans = 0, j;

@@ -6,28 +6,23 @@
 
 using namespace std;
 
-#define SZ 100000
+char buf[900000], *p = buf;
+int curr;
 
 __attribute__((optimize("-Ofast")))
-inline char getch() {
-    static char buf[SZ], *p1 = buf, *p2 = buf;
-    return p1 == p2 && (p2 = (p1 = buf) + fread(buf, 1, SZ, stdin), p1 == p2) ? EOF : *p1++;
-}
-
-__attribute__((optimize("-Ofast")))
-inline int read() {
-    char c;
-    while(!isdigit(c = getch()));
-    int res = c ^ 48;
-    while(isdigit(c = getch())) res = res * 10 + (c ^ 48);
-    return res;
+inline void read() {
+    while(!isdigit(*p)) ++p;
+    curr = *p++ ^ 48;
+    while(isdigit(*p)) curr = curr * 10 + (*p++ ^ 48);
 }
 
 __attribute__((optimize("-Ofast")))
 int main() {
-    int n = read(), v[n], ans = 0, curr, k = 0;
+    fread(buf, 1, 900000, stdin);
+    read();
+    int n = curr, v[n], ans(0), k(0);
     for(int i = 0; i < n; ++i) {
-        curr = read();
+        read();
         while(k) {
             ++ans;
             if(curr > v[k - 1]) --k;

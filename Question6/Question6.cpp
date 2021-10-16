@@ -83,7 +83,7 @@ int main() {
         xg = find(nme_idx[myhash(read_str())]), yg = find(nme_idx[myhash(read_str())]);
         if(xg != yg && cnt[xg] + cnt[yg] <= b && fcnt[xg] + fcnt[yg] <= f
             && scnt[xg] + scnt[yg] <= s && tcnt[xg] + tcnt[yg] <= t) {
-            join(xg, yg);
+            d[xg] = yg;
             cnt[yg] += cnt[xg];
             fcnt[yg] += fcnt[xg];
             scnt[yg] += scnt[xg];

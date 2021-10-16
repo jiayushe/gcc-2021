@@ -9,16 +9,14 @@ using namespace std;
 
 #define LSOne(S) ((S) & -(S))
 #define inf 100000
-#define SZ 1000
 
-char buf[SZ], *p = buf;
+char buf[800], *p = buf;
 
 __attribute__((optimize("-Ofast")))
 inline int read() {
-    char c;
-    while(!isdigit(c = *p++));
-    int res = c ^ 48;
-    while(isdigit(c = *p++)) res = res * 10 + (c ^ 48);
+    while(!isdigit(*p)) ++p;
+    int res = *p++ ^ 48;
+    while(isdigit(*p)) res = res * 10 + (*p++ ^ 48);
     return res;
 }
 
@@ -30,7 +28,7 @@ inline int min_fast(int x, int y) {
 
 __attribute__((optimize("-Ofast")))
 int main() {
-    fread(buf, 1, SZ, stdin);
+    fread(buf, 1, 800, stdin);
     int c = read(), b = read(), k;
     int rsum[b][c][c], memo[1<<b][c+1];
     memset(rsum, 0, sizeof rsum);
