@@ -1,7 +1,6 @@
 #pragma GCC optimize("Ofast,unroll-loops,inline")
 #pragma GCC option("arch=native","tune=native","no-zero-upper")
 #pragma GCC target("bmi,bmi2,lzcnt,popcnt,movbe,aes,pclmul,rdrnd,abm,mmx,avx,avx2,f16c,fma,sse,sse2,sse3,ssse3,sse4.1,sse4.2")
-#include <vector>
 #include <algorithm>
 #include <cstring>
 #include <string>
@@ -15,28 +14,21 @@ using namespace __gnu_pbds;
 
 int d[MAXN], cnt[MAXN], fcnt[MAXN], scnt[MAXN], tcnt[MAXN];
 
-__attribute__((optimize("-Ofast")))
-inline char getch() {
-    static char buf[100000], *p1 = buf, *p2 = buf;
-    return p1 == p2 && (p2 = (p1 = buf) + fread(buf, 1, 100000, stdin), p1 == p2) ? EOF : *p1++;
-}
+char buf[150000], *p = buf;
 
 __attribute__((optimize("-Ofast")))
 inline int read() {
-    char c;
-    while(!isdigit(c = getch()));
-    int res = c ^ 48;
-    while(isdigit(c = getch())) res = res * 10 + (c ^ 48);
+    while(!isdigit(*p)) ++p;
+    int res = *p++ ^ 48;
+    while(isdigit(*p)) res = res * 10 + (*p++ ^ 48);
     return res;
 }
 
 __attribute__((optimize("-Ofast")))
 inline string read_str() {
-    char c;
-    while(isspace(c = getch()) || c == EOF);
+    while(!isalnum(*p)) ++p;
     string res = "";
-    res += c;
-    while(!isspace(c = getch()) && c != EOF) res += c;
+    do { res += *p++; } while(isalnum(*p));
     return res;
 }
 
@@ -47,13 +39,6 @@ inline int find(int a) {
 }
 
 __attribute__((optimize("-Ofast")))
-inline void join(int a, int b) {
-    a = find(a), b = find(b);
-    if(a == b) return;
-    d[a] = b;
-}
-
-__attribute__((optimize("-Ofast")))
 inline int myhash(string s) {
     int h = 2166136261, n = s.length(), i = 0;
     while(i < n) h *= 16777619, h ^= s[i++];
@@ -61,9 +46,16 @@ inline int myhash(string s) {
 }
 
 __attribute__((optimize("-Ofast")))
+inline int max_fast(int x, int y) {
+    int m = (x - y) >> 31;
+    return x + ((y - x) & m);
+}
+
+__attribute__((optimize("-Ofast")))
 int main() {
-    int n = read(), m = read(), a = read() - 1, b = read(), f = read(), s = read(), t = read(), xg, yg;
-    vector<string> idx_nme(n);
+    fread(buf, 1, 150000, stdin);
+    int n = read(), m = read(), a = read(), b = read(), f = read(), s = read(), t = read(), xg, yg;
+    string idx_nme[n];
     gp_hash_table<int, int> nme_idx;
     memset(d, -1, sizeof d);
     for(register int i = 0; i < n; ++i) {
@@ -71,14 +63,12 @@ int main() {
         nme_idx[myhash(idx_nme[i])] = i;
         cnt[i] = 1;
         switch(read()) {
-            case 1:
-                fcnt[i]++; break;
-            case 2:
-                scnt[i]++; break;
-            case 3:
-                tcnt[i]++;
+            case 1: ++fcnt[i]; break;
+            case 2: ++scnt[i]; break;
+            case 3: ++tcnt[i];
         }
     }
+    int mx(1);
     do {
         xg = find(nme_idx[myhash(read_str())]), yg = find(nme_idx[myhash(read_str())]);
         if(xg != yg && cnt[xg] + cnt[yg] <= b && fcnt[xg] + fcnt[yg] <= f
@@ -88,23 +78,15 @@ int main() {
             fcnt[yg] += fcnt[xg];
             scnt[yg] += scnt[xg];
             tcnt[yg] += tcnt[xg];
+            mx = max_fast(mx, cnt[yg]);
         }
     } while(--m);
-    vector<int> idxs;
-    for(register int i = 0; i < n; ++i) {
-        if(cnt[i] > a) a = cnt[i], idxs = {i};
-        else if(cnt[i] == a && !idxs.empty()) idxs.push_back(i);
-    }
-    if(idxs.size() == 0) {
+    if(mx < a) {
         puts("no groups");
         return 0;
     }
-    int idx = idxs[0];
-    for(auto i : idxs) join(i, idx);
-    vector<string> res;
-    for(register int i = 0; i < n; ++i)
-        if(find(i) == idx) res.push_back(idx_nme[i]);
-    sort(res.begin(), res.end());
-    for(auto i : res) puts(i.c_str());
+    for(register int i = 0; i < n; ++i) if(cnt[find(i)] == mx) idx_nme[m++] = idx_nme[i];
+    sort(idx_nme, idx_nme + m);
+    for(register int i = 0; i < m; ++i) puts(idx_nme[i].c_str());
     return 0;
 }

@@ -5,12 +5,13 @@
 #include <cctype>
 
 using namespace std;
+typedef unsigned int uint;
 
 __attribute__((optimize("-Ofast")))
 int main() {
     char buf[16], *p = buf;
     fread(buf, 1, 16, stdin);
-    int n = 0;
+    uint n(0);
     while(isdigit(*p)) n = n * 10 + (*p++ ^ 48);
     printf("%d", ((n / 3) << 1) + (n % 3 > 0));
 }

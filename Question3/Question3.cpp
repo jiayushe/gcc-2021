@@ -26,7 +26,7 @@ inline int max_fast(int x, int y) {
 __attribute__((optimize("-Ofast")))
 int main() {
     fread(buf, 1, 100000, stdin);
-    int n = read(), m = read(), x = read(), a[++n], b[++m], n2 = n, m2 = m;
+    int n = read(), m = read(), x = read(), a[++n], b[++m], n2 = n, m2 = m, ans(1);
     a[0] = b[0] = 0;
     for(register int i = 1; i < n; ++i) {
         a[i] = a[i - 1] + read();
@@ -42,17 +42,14 @@ int main() {
             break;
         }
     }
-    int ans = 0, j;
-    if(n2 <= m2)
+    if(n2 < m2)
         for(register int i = 0; i < n2; ++i) {
-            j = upper_bound(b, b + m2, x - a[i]) - b;
-            ans = max_fast(ans, i + j - 1);
+            ans = max_fast(ans, (int)(upper_bound(b, b + m2, x - a[i]) - b) + i);
         }
     else
         for(register int i = 0; i < m2; ++i) {
-            j = upper_bound(a, a + n2, x - b[i]) - a;
-            ans = max_fast(ans, i + j - 1);
+            ans = max_fast(ans, (int)(upper_bound(a, a + n2, x - b[i]) - a) + i);
         }
-    printf("%d", ans);
+    printf("%d", ans - 1);
     return 0;
 }

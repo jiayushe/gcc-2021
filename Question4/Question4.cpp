@@ -5,9 +5,10 @@
 #include <cctype>
 
 using namespace std;
+typedef unsigned int uint;
 
 char buf[900000], *p = buf;
-int curr;
+uint curr;
 
 __attribute__((optimize("-Ofast")))
 inline void read() {
@@ -20,8 +21,8 @@ __attribute__((optimize("-Ofast")))
 int main() {
     fread(buf, 1, 900000, stdin);
     read();
-    int n = curr, v[n], ans(0), k(0);
-    for(int i = 0; i < n; ++i) {
+    uint n = curr, v[n], ans(0), k(0);
+    do {
         read();
         while(k) {
             ++ans;
@@ -29,7 +30,7 @@ int main() {
             else break;
         }
         v[k++] = curr;
-    }
+    } while(--n);
     printf("%d", ans);
     return 0;
 }
